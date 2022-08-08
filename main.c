@@ -5,12 +5,23 @@
 #include <pthread.h>
 
 #include "board.h"
+#include "text.h"
 
 #define WIDTH 60
 #define HEIGHT 30
 
 int* board;
 int row, col;
+
+int toScreenX(int x)
+{
+	return (col-WIDTH)/2+x*6;
+}
+
+int toScreenY(int y)
+{
+	return (row-HEIGHT)/2+y*3;
+}
 
 bool checkLegalMove(int x, int y, int nx, int ny)
 {
@@ -30,11 +41,17 @@ bool checkLegalMove(int x, int y, int nx, int ny)
 
 void movePiece(int x, int y, int nx, int ny)
 {
-	if(checkLegalMove(x,y,nx,ny))
-	{
-		// Remove piece if stepping over DOES NOT WORK YET??
-		if(abs(nx-x) == 2)
-			board[x+(nx-x)/2+(y+(ny-y)/2)*10] == BLANK;
+	
+		if(checkLegalMove(x,y,nx,ny))
+		{
+					// Remove piece if stepping over DOES NOT WORK YET??
+			if(abs(nx-x) == 2)
+			{
+				mvprintw(toScreenY(0)-1, toScreenX(0), "%d",(nx-x));
+				refresh();
+
+				board[x + (nx-x)/2 +(y + (ny-y)/2) *10] = BLANK;
+			}
 
 		board[nx + ny*10] = board[x + y*10];
 		board[x + y*10] = BLANK;
@@ -47,15 +64,6 @@ void toScreenCoords(int* x, int* y, int row, int col)
 	*y = (row-HEIGHT)/2+*y*3;
 }
 
-int toScreenX(int x)
-{
-	return (col-WIDTH)/2+x*6;
-}
-
-int toScreenY(int y)
-{
-	return (row-HEIGHT)/2+y*3;
-}
 
 int main()
 {
@@ -93,7 +101,6 @@ int main()
 	
 
 
-	mvprintw(toScreenY(sy)-1, toScreenX(sx), "sx: %d, sy: %d", sx, sy);
 
 	drawBoard(board,WIDTH,HEIGHT);
 
@@ -102,6 +109,7 @@ int main()
 	attroff(COLOR_PAIR(5));
 	refresh();
 
+	refresh();
 	while(1)
 	{
 		int c;
@@ -138,6 +146,7 @@ int main()
 					tx  = sx;
 					ty  = sy;
 					movePiece(ssx, ssy, tx, ty);
+
 				}
 				else
 				{
@@ -148,11 +157,15 @@ int main()
 				break;
 		}
 		// Redraw board + selector.
-		erase();
+//		erase();
 		drawBoard(board,WIDTH,HEIGHT);
 		attron(COLOR_PAIR(selected?6:5));
 		mvprintw(toScreenY(sy)+1, toScreenX(sx)+2, "  ");
 		attroff(COLOR_PAIR(selected?6:5));
+		attron(COLOR_PAIR(1));
+		mvprintw(toScreenX(0),toScreenY(-2), "Test0");
+		attroff(COLOR_PAIR(1));
+
 		refresh();
 	}
 	
