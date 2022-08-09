@@ -1,5 +1,5 @@
 checkers: main.o board.o text.o
-	gcc main.o board.o text.o -o checkers -lncurses
+	gcc main.o board.o text.o -o checkers -lncurses -pthread
 
 main.o: main.c
 	gcc -c main.c

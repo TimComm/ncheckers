@@ -95,21 +95,25 @@ int main()
 
 	// Selector coordinates
 	int sx = 0, sy = 0;
+
 	bool selected = false;
 	int ssx = 0, ssy = 0;		//xy selector source
 	int tx = 0, ty = 0;			//xy target
 	
 
+	//gamestarts here
 
-
+	pthread_t thread1;
+	//pthread_create(&thread1, NULL, *readCheckersCont, NULL);
+	erase();
+	refresh();
 	drawBoard(board,WIDTH,HEIGHT);
-
 	attron(COLOR_PAIR(5));
 	mvprintw(toScreenY(sy)+1, toScreenX(sx)+2, "  ");
 	attroff(COLOR_PAIR(5));
 	refresh();
 
-	refresh();
+	readCheckers();
 	while(1)
 	{
 		int c;
@@ -118,29 +122,38 @@ int main()
 		{
 			case KEY_LEFT:
 				sx--;
+				readCheckers();
 				break;
 			case KEY_RIGHT:
 				sx++;
+				readCheckers();
 				break;
 			case KEY_UP:
 				sy--;
+				readCheckers();
 				break;
 			case KEY_DOWN:
 				sy++;
+				readCheckers();
 				break;
 			case 'h':
 				sx--;
+				readCheckers();
 				break;
 			case 'l':
 				sx++;
+				readCheckers();
 				break;
 			case 'k':
 				sy--;
+				readCheckers();
 				break;
 			case 'j':
 				sy++;
+				readCheckers();
 				break;
 			case ' ':
+				readCheckers();
 				if(selected)
 				{
 					tx  = sx;
@@ -157,7 +170,6 @@ int main()
 				break;
 		}
 		// Redraw board + selector.
-//		erase();
 		drawBoard(board,WIDTH,HEIGHT);
 		attron(COLOR_PAIR(selected?6:5));
 		mvprintw(toScreenY(sy)+1, toScreenX(sx)+2, "  ");
