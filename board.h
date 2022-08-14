@@ -3,6 +3,7 @@
 
 #include <ncurses.h>
 
+extern int boardEval;
 enum state{
 	BLANK,
 	BLACK,
@@ -11,5 +12,7 @@ enum state{
 int * initBoard();
 void printBoard(int * board);
 void drawBoard(int * board, int width, int height);
+void evalBoard();
+void printEval();
 
 #endif
