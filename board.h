@@ -13,6 +13,6 @@ int * initBoard();
 void printBoard(int * board);
 void drawBoard(int * board, int width, int height);
 void evalBoard();
-void printEval();
+void printEval(int eval);
 
 #endif

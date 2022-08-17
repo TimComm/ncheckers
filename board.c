@@ -104,7 +104,7 @@ void drawBoard(int *board, int width, int height)
 
 void evalBoard(int *board)
 {
-	boardEval = 9;
+	boardEval = 0;
 	for (int i = 0; i < 10; i++)
 	{
 		for (int j = 0; j < 10; j++)
@@ -115,16 +115,24 @@ void evalBoard(int *board)
 				boardEval--;
 		}
 	}
+	printEval(boardEval);
 }
 
-void printEval()
+void printEval(int eval)
 {
 	int row, col;
 	getmaxyx(stdscr, row, col);
 	int y = (row - WHEIGHT) / 2 + 3 * 10;
 	int x = (col - WWIDTH) / 2 + 6 * -4;
 
-	mvprintw(y, x, "Eval");
+	mvprintw(y, x, "   %d", eval);
+	for(int i = -10; i < 10; i++)
+	{
+		attron(COLOR_PAIR((i<eval)?5:7));
+		mvprintw(y-i, x, " ");
+		attroff(COLOR_PAIR((i<eval)?5:7));
+	}
+
 	refresh();
 } 
 

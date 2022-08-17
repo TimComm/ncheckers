@@ -91,6 +91,7 @@ int main()
 	init_pair(4, COLOR_BLUE, COLOR_BLACK);
 	init_pair(5, COLOR_WHITE, COLOR_RED);
 	init_pair(6, COLOR_WHITE, COLOR_YELLOW);
+	init_pair(7, COLOR_WHITE, COLOR_BLUE);
 
 	// Selector coordinates
 	int sx = 0, sy = 0;
@@ -171,7 +172,7 @@ int main()
 		attron(COLOR_PAIR(selected ? 6 : 5));
 		mvprintw(toScreenY(sy) + 1, toScreenX(sx) + 2, "  ");
 		attroff(COLOR_PAIR(selected ? 6 : 5));
-		printEval();
+		evalBoard(board);
 
 		refresh();
 	}
