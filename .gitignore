@@ -1,0 +1,7 @@
+board.h.gch
+board.o
+checkers
+main.o
+printer.c
+text.h.gch
+text.o

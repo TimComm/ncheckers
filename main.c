@@ -94,7 +94,7 @@ int main()
 	init_pair(7, COLOR_WHITE, COLOR_BLUE);
 
 	// Selector coordinates
-	int sx = 0, sy = 0;
+	int sx = 0, sy = 6;
 
 	bool selected = false;
 	int ssx = 0, ssy = 0; // xy selector source
