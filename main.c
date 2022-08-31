@@ -11,6 +11,7 @@
 #define HEIGHT 30
 
 int *board;
+bool whitesturn;
 int row, col;
 
 int toScreenX(int x)
@@ -25,8 +26,20 @@ int toScreenY(int y)
 
 bool checkLegalMove(int x, int y, int nx, int ny)
 {
+	/*
+	Move is legal when:
+	ToBe: It is your turn.
+	The block moves one step diagonally.
+	The block skips over another block. Which is 'double' diagonally
+	ToBe: The block does not move out of bounds. necessary?
+	*/
 	int dx = nx - x;
 	int dy = ny - y;
+	
+	//Check if its your turn
+	if ((board[x + y * 10] == WHITE && !whitesturn) ||
+		(board[x + y * 10] == BLACK && whitesturn))
+		return false;
 
 	// 1 step diagonal move
 	if (abs(dx) == 1 && abs(dy) == 1 && board[nx + ny * 10] == BLANK)
@@ -44,7 +57,6 @@ void movePiece(int x, int y, int nx, int ny)
 
 	if (checkLegalMove(x, y, nx, ny))
 	{
-		// Remove piece if stepping over DOES NOT WORK YET??
 		if (abs(nx - x) == 2)
 		{
 			mvprintw(toScreenY(0) - 1, toScreenX(0), "%d", (nx - x));
@@ -55,7 +67,9 @@ void movePiece(int x, int y, int nx, int ny)
 
 		board[nx + ny * 10] = board[x + y * 10];
 		board[x + y * 10] = BLANK;
+	whitesturn = !whitesturn;
 	}
+
 }
 
 void toScreenCoords(int *x, int *y, int row, int col)
@@ -101,6 +115,7 @@ int main()
 	int tx = 0, ty = 0;	  // xy target
 
 	// gamestarts here
+	whitesturn = true;
 
 	pthread_t thread1;
 	// pthread_create(&thread1, NULL, *readCheckersCont, NULL);
