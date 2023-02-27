@@ -10,22 +10,8 @@ volatile int thread_exit = 1;
 void readCheckers()
 {
 	count++;
-	switch(count%4)
-	{
-		case 0:
-			readCheckersA();
-			break;
-		case 1:
-			readCheckersB();
-			break;
-		case 2:
-			readCheckersC();
-			break;
-		case 3:
-			readCheckersD();
-			break;
-	}
-
+	readCheckers2(count%4);
+	
 }
 
 void * readCheckersCont(void *ptr)
@@ -36,11 +22,27 @@ void * readCheckersCont(void *ptr)
 		sleep(3);
 	}
 }
-void readCheckersA()
+void readCheckers2(int A)
 {
+	FILE * stream;
+	switch(A)
+	{
+		case 0: 
+			stream = fopen("./dat/txt1.txt", "r");
+			break;
+		case 1:
+			stream = fopen("./dat/txt2.txt", "r");
+			break;
+		case 2:
+			stream = fopen("./dat/txt3.txt", "r");
+			break;;
+		case 3:
+			stream = fopen("./dat/txt4.txt", "r");
+			break;
+		
+	}
+
   char textbuffer[113*11]; // Buffer to store data
-  FILE * stream;
-  stream = fopen("./dat/txt1.txt", "r");
   fread(&textbuffer, sizeof(char), 113*11, stream);
   fclose(stream);
   // Printing data to check validity
@@ -55,57 +57,3 @@ void readCheckersA()
   }
 }
 
-void readCheckersB()
-{
-  char textbuffer[113*11]; // Buffer to store data
-  FILE * stream;
-  stream = fopen("./dat/txt2.txt", "r");
-  fread(&textbuffer, sizeof(char), 113*11, stream);
-  fclose(stream);
-  // Printing data to check validity
-  int x;
-  x = getmaxx(stdscr);
-  for (int j=0; j < 11; j++)
-  {
-	  for (int i = 0; i < 112; i++)
-	  {
-		  mvprintw(j,x/2-112/2+i,"%c", textbuffer[i+j*112+j]);
-	  }
-  }
-}
-void readCheckersC()
-{
-  char textbuffer[113*11]; // Buffer to store data
-  FILE * stream;
-  stream = fopen("./dat/txt3.txt", "r");
-  fread(&textbuffer, sizeof(char), 113*11, stream);
-  fclose(stream);
-  // Printing data to check validity
-  int x;
-  x = getmaxx(stdscr);
-  for (int j=0; j < 11; j++)
-  {
-	  for (int i = 0; i < 112; i++)
-	  {
-		  mvprintw(j,x/2-112/2+i,"%c", textbuffer[i+j*112+j]);
-	  }
-  }
-}
-void readCheckersD()
-{
-  char textbuffer[113*11]; // Buffer to store data
-  FILE * stream;
-  stream = fopen("./dat/txt4.txt", "r");
-  fread(&textbuffer, sizeof(char), 113*11, stream);
-  fclose(stream);
-  // Printing data to check validity
-  int x;
-  x = getmaxx(stdscr);
-  for (int j=0; j < 11; j++)
-  {
-	  for (int i = 0; i < 112; i++)
-	  {
-		  mvprintw(j,x/2-112/2+i,"%c", textbuffer[i+j*112+j]);
-	  }
-  }
-}

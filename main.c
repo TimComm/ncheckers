@@ -24,19 +24,53 @@ int toScreenY(int y)
 	return (row - HEIGHT) / 2 + y * 3;
 }
 
+bool isEmpty(int x, int y)
+{
+	if (board[x + y * 10] == BLANK)
+		return true;
+	return false;
+}
+
+bool forcedToTake(int x, int y)
+{
+	int color, next;
+	int dydx[4][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+
+	/*
+	Check all diagonals for possible 'double hop'
+	Double hop:
+	next is opposite color and not blank
+	second next spot is empty
+	*/
+
+	color = board[x + y * 10];
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (color != board[x + dydx[i][1] + y + dydx[i][0] * 10] && 
+			!isEmpty(x + dydx[i][1], y + dydx[i][0]) && 
+			isEmpty(x + 2 * dydx[i][1], y + 2 * dydx[i][0]))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool checkLegalMove(int x, int y, int nx, int ny)
 {
 	/*
 	Move is legal when:
 	ToBe: It is your turn.
+		ToDo: If forced to take, it remains your turn.
 	The block moves one step diagonally.
 	The block skips over another block. Which is 'double' diagonally
 	ToBe: The block does not move out of bounds. necessary?
 	*/
 	int dx = nx - x;
 	int dy = ny - y;
-	
-	//Check if its your turn
+
+	// Check if its your turn
 	if ((board[x + y * 10] == WHITE && !whitesturn) ||
 		(board[x + y * 10] == BLACK && whitesturn))
 		return false;
@@ -65,11 +99,12 @@ void movePiece(int x, int y, int nx, int ny)
 			board[x + (nx - x) / 2 + (y + (ny - y) / 2) * 10] = BLANK;
 		}
 
+		//		if(!forcedToTake(nx,ny))
+		whitesturn = !whitesturn;
+
 		board[nx + ny * 10] = board[x + y * 10];
 		board[x + y * 10] = BLANK;
-	whitesturn = !whitesturn;
 	}
-
 }
 
 void toScreenCoords(int *x, int *y, int row, int col)

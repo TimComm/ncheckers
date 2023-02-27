@@ -10,7 +10,6 @@ int boardEval = 0;
 int *initBoard()
 {
 	int i, j;
-
 	static int board[HEIGHT * WIDTH];
 
 	for (i = 0; i < 10; i++)
@@ -56,7 +55,6 @@ void printBoard(int *board)
 void drawBoard(int *board, int width, int height)
 {
 	int row, col;
-
 	getmaxyx(stdscr, row, col);
 
 	for (int i = 0; i < HEIGHT; i++)
@@ -135,17 +133,3 @@ void printEval(int eval)
 
 	refresh();
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

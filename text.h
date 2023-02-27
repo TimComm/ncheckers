@@ -1,10 +1,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-void readCheckersA();
-void readCheckersB();
-void readCheckersC();
-void readCheckersD();
+void readCheckers2(int A);
 void readCheckers();
 void * readCheckersCont();
 
